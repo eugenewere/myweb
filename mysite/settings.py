@@ -30,7 +30,7 @@ SECRET_KEY = '*tnm4g17=vh%k@i#_gpy_ky&i4hese_+-$g%%^_1%=#))l+ru1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["167.99.13.212", 'localhost', '127.0.0.1', ]
+ALLOWED_HOSTS = ["167.99.13.212", 'localhost', '127.0.0.1','www.genedev.guru','genedev.guru']
 
 
 # Application definition
