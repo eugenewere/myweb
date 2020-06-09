@@ -1,0 +1,195 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Announcement Bar </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding A Announcement Bar</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+                      <button type="button" class="btn btn-gradient-primary " data-toggle="modal" data-target="#exampleModal">Add Announcement Bar<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding A Announcement Bar</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <form action="{% url 'backend:addanouncementbar' %}" id="addcategory" method="post">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label class=" form-control-label" for="cname2">Message</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-navicon"></i></div>
+                                            <input class="form-control" name="message" id="cname2" type="text">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label class=" form-control-label" for="icon2m">Icon</label>
+                                        <div class="input-group">
+                                            <input class="form-control" name="icon" id="icon2m" type="text">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label class=" form-control-label" for="icon2n">Background Color</label>
+                                        <div class="input-group">
+                                            <input class="form-control" name="backgroud_color" id="icon2n" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label class=" form-control-label" for="icon2n">Text Color</label>
+                                        <div class="input-group">
+                                            <input class="form-control" name="text_color" id="icon2n" type="text">
+                                        </div>
+                                     </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                     {% for a in announcements %}
+                         <div class="modal fade" id="editcategory{{ a.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing a AnnouncementBar</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editanouncementbar' a.id %}" id="addcategory" method="post">
+                                     <div class="modal-body">
+                                        {% csrf_token %}
+                                         <div class="form-group">
+                                            <label class=" form-control-label" for="cname2">Message</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon" ><i class="fa fa-navicon"></i></div>
+                                                <input value="{{ a.message }}" class="form-control" name="message" id="cname2" type="text">
+                                            </div>
+                                         </div>
+                                        <div class="form-group">
+                                            <label class=" form-control-label" for="icon2m">Icon </label>
+                                            <div class="input-group">
+                                                <i style="font-size: 43px; color: var(--red);" class="{{ a.icon }}"></i>
+                                                <input value="{{ a.icon }}" class="form-control" name="icon" id="icon2m" type="text">
+                                            </div>
+                                         </div>
+                                        <div class="form-group">
+                                            <label class=" form-control-label" for="icon2n">Background Color</label>
+                                            <div class="input-group">
+                                                <input value="{{ a.backgroud_color}}" class="form-control" name="backgroud_color" id="icon2n" type="text">
+                                            </div>
+                                         </div>
+                                         <div class="form-group">
+                                            <label class=" form-control-label" for="icon2n">Text Color</label>
+                                            <div class="input-group">
+                                                <input value="{{ a.text_color }}" class="form-control" name="text_color" id="icon2n" type="text">
+                                            </div>
+                                         </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <table id="order-listing" class="table w-100">
+                          <thead>
+                            <tr>
+                              <th>Order #</th>
+                              <th>Background</th>
+                              <th>Text color</th>
+                              <th>Icon</th>
+                              <th>Message</th>
+                              <th>Status</th>
+                              <th>Created At</th>
+                              <th>Updated At</th>
+                              <th>Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                             {% for a in announcements %}
+                                <tr>
+                                      <td>{{ forloop.counter }}</td>
+                                      <td style="padding: 0;">
+                                          <div style=" background:{{ a.backgroud_color }}; width: 100px; height: 50px; border-radius: 7px; overflow:hidden; margin: 0;">
+
+                                          </div>
+                                      </td>
+                                      <td style="padding: 0;">
+                                          <div style=" background:{{ a.text_color }}; width: 100px; height: 50px; border-radius: 7px; overflow:hidden; margin: 0;">
+
+                                          </div>
+                                      </td>
+
+                                      <td><i style="font-size: 43px; color: var(--red);" class="{{ a.icon }}"></i></td>
+                                      <td>
+                                          <p>{{ a.message }}</p>
+                                      </td>
+                                      <td><span>{{ a.status }}</span></td>
+                                      <td>{{ a.created_at|naturaltime }}</td>
+                                      <td>{{ a.updated_at|naturaltime }}</td>
+                                      <td>
+                                          <a data-toggle="modal" data-target="#editcategory{{ a.id }}" href="" class="btn  btn-gradient-info">Edit</a>
+                                          <a href="{% url 'backend:deleteanouncementbar' a.id %}" class="btn  btn-gradient-danger  ">Delete</a>
+                                          <div class="dropdown">
+                                            <button class="btn {% if a.status == "SHOW" %} btn-gradient-warning {% else %} btn-gradient-success {% endif %} dropdown-toggle w-100" type="button" id="dropdownMenuOutlineButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ a.status|capfirst }}</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton4">
+                                              <h6 class="dropdown-header">Status</h6>
+                                                {% if a.status == "SHOW" %}
+                                                    <a class="dropdown-item" href="{% url "backend:editanouncementbarstatus" a.id %}">Hide</a>
+                                                {% elif a.status == "HIDE" %}
+                                                     <a class="dropdown-item" href="{% url "backend:editanouncementbarstatus" a.id %}">Show</a>
+                                                {% endif %}
+
+                                            </div>
+                                          </div>
+                                      </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}

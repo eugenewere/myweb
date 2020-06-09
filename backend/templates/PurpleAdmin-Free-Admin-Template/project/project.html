@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Project </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding Project</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+                      <button style="font-family: 'Heebo', sans-serif;" type="button" class="btn btn-gradient-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Add Project<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding Project</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <form action="{% url 'backend:addportfolio' %}" id="addcategory" method="post" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="input-group col-sm-12 ">
+                                       <div class="form-group w-100">
+                                            <label class="custom-control p-0" for="image">Choose An Image</label>
+                                           <div class="row " style="padding: 20px; ">
+                                                <div class="form-group w-100" style=" display:flex; padding: 20px; flex-direction: column; position: relative;">
+                                                    <label for="exampleInputEmail1">Project Image</label>
+                                                    <input required id="vmimg" name="image" type="file" onchange="readURL(this);" style="position: absolute;width: 107px; top: 50%; transform: translate(-50%, -50%); left: 50%; z-index: 33;"  />
+                                                    <img  style="border-radius: 20px; width: 100%; height: 430px; position: relative; background-position: center" class="blah" id="image" src="{% static 'images/no-image.jpg' %}" alt="your image" />
+                                                    <small id="emailHelp" style="font-size: 22px;" class="form-text text-muted">Image Preferably .jpeg, .png, .jpeg .gif</small>
+                                                </div>
+                                            </div>
+                                       </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Category</label>
+                                        <select name="category" class="form-control" id="exampleFormControlSelect1">
+                                            <option value="">Choose A Category</option>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                      </div>
+                                     <div class="form-group">
+                                        <label for="date" class=" form-control-label"> Name</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input autocapitalize="on" class="form-control" name="name" id="date" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label for="title" class=" form-control-label">Link</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="link" id="title" type="url" max="100" min="0">
+                                        </div>
+                                     </div>
+
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                    {% for p in portfolio %}
+                         <div class="modal fade" id="editcategory{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing Portfolio</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editportfolio' p.id %}" id="addcategory" method="post" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="input-group col-sm-12 ">
+                                       <div class="form-group w-100">
+                                            <label class="custom-control p-0" for="image">Choose An Image</label>
+                                           <div class="row " style="padding: 20px; ">
+                                                <div class="form-group w-100" style=" display:flex; padding: 20px; flex-direction: column; position: relative;">
+                                                    <label for="exampleInputEmail1">Project Image</label>
+                                                    <input value="{{ p.image }}" id="vmimg" name="image" type="file" onchange="readURL(this);" style="position: absolute;width: 107px; top: 50%; transform: translate(-50%, -50%); left: 50%; z-index: 33;"  />
+                                                    <img  style="border-radius: 20px; width: 100%; height: 430px; position: relative; background-position: center" class="blah" id="image" src="{{ p.image.url }}" alt="your image" />
+                                                    <small id="emailHelp" style="font-size: 22px;" class="form-text text-muted">Image Preferably .jpeg, .png, .jpeg .gif</small>
+                                                </div>
+                                            </div>
+                                       </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Category</label>
+                                        <select name="category" class="form-control" id="exampleFormControlSelect1">
+                                            <option value="">Choose A Category</option>
+                                            {% for category in categories %}
+                                                <option {% if category.id == p.category.id %} selected {% endif %} value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                      </div>
+                                     <div class="form-group">
+                                        <label for="date" class=" form-control-label"> Name</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input value="{{ p.name }}" autocapitalize="on" class="form-control" name="name" id="date" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label for="title" class=" form-control-label">Link</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input value="{{ p.link }}" class="form-control" name="link" id="title" type="text" max="100" min="0">
+                                        </div>
+                                     </div>
+
+
+
+                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <table id="order-listing" class="table w-100">
+                          <thead>
+                            <tr>
+                              <th style="white-space: pre-line; ">#</th>
+                              <th>Image</th>
+                              <th>Name</th>
+                              <th>Category</th>
+                              <th>Link</th>
+                              <th>Created At</th>
+                              <th>Updated At</th>
+                              <th>Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for p in portfolio %}
+                                <tr>
+                                      <td style="white-space: pre-line; ">{{ forloop.counter }}</td>
+                                      <td  >
+                                         <div style="width: 300px; height: 200px; border-radius: 7px; overflow:hidden;">
+                                              <img style="width: 100%; height: 100%; border-radius: 0 !important;" src="{{ p.image.url }}" alt="">
+                                          </div>
+                                      </td>
+                                      <td   style="white-space: pre-line; ">{{ p.name }}</td>
+                                      <td  style="white-space: pre-line; ">{{ p.category.name }}</td>
+                                      <td>
+                                          <a style="max-width: max-content; border-radius: 10px; color: indianred;" class="page-link" {% if p.link %} target="_blank" {% endif %} href="{% if p.link %}{{ p.link }}{% else %} javascript:void(0) {% endif %}" >{{ p.link }}</a>
+                                      </td>
+
+                                      <td>{{ p.created_at|naturaltime }}</td>
+                                      <td>{{ p.updated_at|naturaltime }}</td>
+                                      <td style="">
+                                          <a data-toggle="modal" data-target="#editcategory{{ p.id }}" href="" class="  btn btn-gradient-info">Edit</a>
+                                          <a href="{% url 'backend:deleteportfolio' p.id %}" class="  btn btn-gradient-danger">Delete</a>
+                                          <div class="dropdown">
+                                            <button class="btn {% if p.status == "COOMINGSOON" %} btn-gradient-warning {% else %} btn-gradient-success {% endif %} dropdown-toggle w-100" type="button" id="dropdownMenuOutlineButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ p.status|capfirst }}</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton4">
+                                              <h6 class="dropdown-header">Status</h6>
+                                                {% if p.status == "COOMINGSOON" %}
+                                                    <a class="dropdown-item" href="{% url "backend:editportfoliostatus"  p.id %}">COOMING SOON</a>
+                                                {% elif p.status == "DONE" %}
+                                                     <a class="dropdown-item" href="{% url "backend:editportfoliostatus"  p.id %}">DONE</a>
+                                                {% endif %}
+
+                                            </div>
+                                          </div>
+
+                                      </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}
+</html>

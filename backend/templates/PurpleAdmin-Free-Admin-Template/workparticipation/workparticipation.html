@@ -1,0 +1,175 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Work Participation </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding Work Participation</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+                      <button style="font-family: 'Heebo', sans-serif;" type="button" class="btn btn-gradient-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Add Work Participation<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding Work Participation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <form action="{% url 'backend:addworkparticipation' %}" id="addcategory" method="post">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label for="date" class=" form-control-label"> Start And End Data</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="start_end_dates" id="date" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label for="title" class=" form-control-label"> Title</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="title" id="title" type="text">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label for="position" class=" form-control-label"> Position</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="position" id="position" type="text">
+                                        </div>
+                                     </div>
+
+                                     <div class="form-group">
+                                        <label for="de" class=" form-control-label"> Description</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <textarea class="form-control" name="description" id="de" cols="30" rows="10"></textarea>
+                                        </div>
+                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                    {% for wp in wps %}
+                         <div class="modal fade" id="editcategory{{ wp.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing Work Participation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editworkparticipation' wp.id %}" id="addcategory" method="post">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                         <div class="form-group">
+                                            <label for="date" class=" form-control-label"> Start And End Data</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                <input class="form-control" name="start_end_dates" value="{{ wp.start_end_dates }}" id="date" type="text">
+                                            </div>
+                                         </div>
+                                         <div class="form-group">
+                                            <label for="title" class=" form-control-label"> Title</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                <input class="form-control" name="title" value="{{ wp.title }}" id="title" type="text">
+                                            </div>
+                                         </div>
+                                        <div class="form-group">
+                                            <label for="position" class=" form-control-label"> Position</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                <input class="form-control" name="position" value="{{ wp.position }}" id="position" type="text">
+                                            </div>
+                                         </div>
+
+                                         <div class="form-group">
+                                            <label for="de" class=" form-control-label"> Description</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                <textarea class="form-control" name="description" id="de" cols="30" rows="10">{{ wp.description }}</textarea>
+                                            </div>
+                                         </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <table id="order-listing" class="table w-100">
+                          <thead>
+                            <tr>
+                              <th>Order #</th>
+                              <th>Title</th>
+                              <th>Position</th>
+                              <th>Start And End Date</th>
+                              <th>Description</th>
+                              <th>Created At</th>
+                              <th>Updated At</th>
+                              <th>Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for wp in wps %}
+                                <tr>
+                                      <td>{{ forloop.counter }}</td>
+                                      <td  style="white-space: pre-line; ">{{ wp.title }}</td>
+                                      <td  style="white-space: pre-line; ">{{ wp.position }}</td>
+                                      <td  style="white-space: pre-line; ">{{ wp.start_end_dates }}</td>
+                                      <td style="white-space: pre-line; ">{{ wp.description }}</td>
+                                      <td>{{ wp.created_at|naturaltime }}</td>
+                                      <td>{{ wp.updated_at|naturaltime }}</td>
+                                      <td>
+                                          <a data-toggle="modal" data-target="#editcategory{{ wp.id }}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                          <a href="{% url 'backend:deleteworkparticipation' wp.id %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                      </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}

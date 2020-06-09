@@ -1,0 +1,155 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Contact Me Images </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding A Contact Me Images</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+                      <button type="button" class="btn btn-gradient-primary " data-toggle="modal" data-target="#exampleModal">Add A Contact Me Images<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding A Contact Me Images</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                              <form action="{% url 'backend:addcontactmeimage' %}" method="POST" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="input-group col-sm-12 ">
+                                       <div class="form-group w-100">
+                                            <label class="custom-control p-0" for="image">Choose A File</label>
+                                           <div class="row " style="padding: 20px; ">
+                                                <div class="form-group w-100" style=" display:flex; padding: 20px; flex-direction: column; position: relative;">
+                                                    <label for="exampleInputEmail1">Counter Image</label>
+                                                    <input required id="vmimg" name="image" type="file" onchange="readURL(this);" style="position: absolute;width: 107px; top: 50%; transform: translate(-50%, -50%); left: 50%; z-index: 33;"  />
+                                                    <img  style="border-radius: 20px; width: 100%; height: 430px; position: relative; background-position: center" class="blah" id="image" src="{% static 'images/no-image.jpg' %}" alt="your image" />
+                                                    <small id="emailHelp" style="font-size: 22px;" class="form-text text-muted">Image Preferably .jpeg, .png, .jpeg .gif</small>
+                                                </div>
+                                            </div>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                     {% for image in images %}
+                         <div class="modal fade" id="editcategory{{ image.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing a Counter Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editcontactmeimage' image.id %}" method="POST" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                        <div class="input-group col-sm-12 ">
+                                           <div class="form-group w-100">
+                                                <label class="custom-control p-0" for="image">Choose A File</label>
+                                               <div class="row " style="padding: 20px; ">
+                                                    <div class="form-group w-100" style=" display:flex; padding: 20px; flex-direction: column; position: relative;">
+                                                        <label for="exampleInputEmail1">Counter Image</label>
+                                                        <input value="{{ image.image }}" required id="vmimg" name="image" type="file" onchange="readURL2(this);" style="position: absolute;width: 107px; top: 50%; transform: translate(-50%, -50%); left: 50%; z-index: 33;"  />
+                                                        <img  style="border-radius: 20px; width: 100%; height: 430px; position: relative; background-position: center" class="blah2" id="image" src="{{ image.image.url }}" alt="your image" />
+                                                        <small id="emailHelp" style="font-size: 22px;" class="form-text text-muted">Image Preferably .jpeg, .png, .jpeg .gif</small>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                       <table id="order-listing" class="table w-100">
+                          <thead>
+                            <tr>
+                              <th>Order #</th>
+                              <th>Image</th>
+                              <th>Created At</th>
+                              <th>Updated At</th>
+                              <th>Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for image in images %}
+                                <tr>
+                                      <td style=" padding:0 !important;">{{ forloop.counter }}</td>
+                                      <td style="padding: 0;">
+
+                                          <div style="width: 500px; height: 450px; border-radius: 7px; overflow:hidden; margin: 0;">
+                                              <img style="width: 100%; height: 100%; border-radius: 0 !important;" src="{{image.image.url }}" alt="">
+                                          </div>
+                                      </td>
+
+                                      <td>{{ image.created_at|naturaltime }}</td>
+                                      <td>{{ image.updated_at|naturaltime }}</td>
+                                      <td style="white-space: pre-wrap">
+                                          <a data-toggle="modal" data-target="#editcategory{{ image.id }}" href="" class="btn btn-gradient-info w-100">Edit</a>
+                                          <a href="{% url 'backend:deletecontactmeimage' image.id %}" class="btn btn-gradient-danger w-100">Delete</a>
+                                           <div class="dropdown">
+                                            <button class="btn {% if image.status == "ACTIVE" %} btn-gradient-warning {% else %} btn-gradient-success {% endif %} dropdown-toggle w-100" type="button" id="dropdownMenuOutlineButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ image.status|capfirst }}</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton4">
+                                              <h6 class="dropdown-header">Status</h6>
+                                                {% if image.status == "ACTIVE" %}
+                                                    <a class="dropdown-item" href="{% url "backend:editcontactmeimagestatus" image.id %}">Inactive</a>
+                                                {% elif image.status == "INACTIVE" %}
+                                                     <a class="dropdown-item" href="{% url "backend:editcontactmeimagestatus" image.id %}">Active</a>
+                                                {% endif %}
+
+                                            </div>
+                                          </div>
+                                      </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}

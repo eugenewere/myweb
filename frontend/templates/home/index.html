@@ -1,0 +1,816 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+{% load call_method %}
+{% block style %}
+    <style>
+        .my-height{
+            height: 500px;
+        }
+        .expert_image{
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left:0;
+        }
+        @media (max-width: 768px){
+           .my-height{
+                height: 450px;
+            }
+            .custom-height{
+                height: 450px;
+            }
+            .reverse_at_768{
+                flex-direction: column-reverse;
+            }
+            .expert_image{
+                height: 450px;
+            }
+        }
+
+
+    </style>
+{% endblock style %}
+{% block content %}
+        <!-- Navbar Start -->
+
+        <nav style="z-index: 10000;
+                {% if announces.count > 0 %}
+                    display: flex; flex-direction: column; padding: 0;
+                {% endif %}
+                {% if announces.count == 0 %}
+                    padding: 20px 0;
+                {% endif %} "
+             class="navbar navbar-expand-lg fixed-top navbar-custom navbar-light sticky">
+            {% if announces.count > 0 %}
+                {% for a in announces %}
+                    <div style="z-index: 10000; position: relative; width: 100%;height: 40px; margin-bottom: 10px; background: {{ a.backgroud_color }}; overflow: hidden;" class="">
+                        <div class="d-flex container justify-content-between align-items-center" style="height: 100%;">
+                            <span style="color: {{ a.text_color }};">
+                                {% if a.icon %}
+                                    <i class="{{ a.icon }} px-2"></i>
+                                {% endif %}
+                                {{ a.message|capfirst }}</span>
+                            <span style="color: {{ a.text_color }};" aria-hidden="true">&times;</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+    		<div class="container " {% if announces.count > 0 %} style="padding: 15px 0;" {% endif %}>
+			    <a class="navbar-brand" href="{% url 'frontend:home' %}">
+                    <img src="{% static 'images/logo.png' %}" class="l-dark" height="15" alt="">
+                    <img src="{% static 'images/logo-light.png' %}" class="l-light" height="15" alt="">
+                </a>
+			    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			        <span class="mdi mdi-menu"></span>
+			    </button><!--end button-->
+
+			    <div class="collapse navbar-collapse" id="navbarCollapse">
+			        <ul class="navbar-nav ml-auto">
+			            <li class="nav-item active">
+			                <a class="nav-link" href="#home">Home</a>
+                        </li><!--end nav item-->
+			            <li class="nav-item">
+			                <a class="nav-link" href="#services">Services</a>
+			            </li><!--end nav item-->
+                        <li class="nav-item">
+			                <a class="nav-link" href="#resume">Resume</a>
+			            </li><!--end nav item-->
+			            <li class="nav-item">
+			                <a class="nav-link" href="#projects">Projects</a>
+                        </li><!--end nav item-->
+
+			            <li class="nav-item">
+			                <a class="nav-link" href="#contact">Contact</a>
+                        </li><!--end nav item-->
+                    </ul>
+                </div>
+
+		    </div><!--end container-->
+		</nav><!--end navbar-->
+        <!-- Navbar End -->
+
+
+        <!-- HOME START-->
+        <section class="bg-home" id="home">
+            <div class="my_slider">
+                <div id="owl-example" class="owl-carousel" style="height: 100%;">
+                    {% for carousel in carousels %}
+                        <div style=" width:100%; height: 100%; position:relative; overflow: hidden;">
+                          <div style=" width:100%; height: 100%; position:absolute; top:0; left: 0;right: 0; overflow: hidden" >
+                              <img class="glitch-img2"  style=" width:100%; height: 100%; background-position: center center ; " src="{{ carousel.image.url }}" alt="">
+                          </div>
+                          <div class="home-center " style="position: absolute; top: 0; z-index: 9000" >
+                            <div class="home-desc-center">
+                                <div class="container">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-12 title-carousel-wrapper" style="padding-left: 80px" >
+                                            <div class="title-heading mt-5">
+                                                <h1 class="heading text-light mt-3">I Am <span class="element text-custom" data-elements="{{ carousel.title }}r"></span></h1>
+                                                <p class="para-desc text-light">{{ carousel.sub_title }}.</p>
+                                                <div class="mt-4">
+                                                    <a href="{% url 'frontend:view_cv' %}" class="btn btn-custom-outline rounded">Download CV <i class="mdi mdi-download"></i></a>
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </div><!--end container-->
+                                <a href="#about" data-scroll-nav="1" class="mouse-icon d-none d-md-inline-block rounded-pill bg-transparent mouse-down">
+                                    <span class="wheel position-relative d-block mover "></span>
+                                </a>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                 </div>
+
+
+
+            </div>
+        </section><!--end section-->
+        <!-- HOME END-->
+
+
+
+        <!-- About Start -->
+        <section class="section" id="about">
+            <div class="container">
+                <div class="row align-items-center">
+{#                    <div class="col-sm-2" style="margin: 0; padding: 0; width: auto;height: auto;">#}
+{#                            #}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="col-lg-5 col-md-5 " >
+
+                        <div class=" row" >
+
+                            <div class="about-hero" >
+                                <h4 class="title text-custom  myside-banner-text"  data-elements="Web Designer, Web Developer, Photographer">
+                                    {{ about.name }}</h4>
+
+                                <img style="position: absolute;" src="{{ about.image.url }}"  class="img-fluid mx-auto d-block position-relative " alt="">
+
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-7 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+
+                        <div class="section-title about-info mb-0 ml-lg-5 ml-md-3">
+                            <h4 class="title text-custom mb-3" >{{ about.name }}</h4>
+                            <h6 class="designation mb-3">I'm Passionate <span class="text-custom">{% for c in categories %} {{ c.name }}, {% endfor %}</span></h6>
+                            <p class="text-muted">{{ about.description }}.</p>
+                            <div class="about-list">
+                                <ul class="list-unstyled">
+                                    <li><span class="list-title list-inline-item">Email ID : </span> <span> {{ about.email }} </span></li>
+                                    <li><span class="list-title list-inline-item">Address : </span> <span> {{ about.address|title }}</span></li>
+                                    <li><span class="list-title list-inline-item">Age : </span> <span> {{  about.age }} Year </span></li>
+                                    <li><span class="list-title list-inline-item">Phone : </span> <span> {{ about.phone }}</span></li>
+                                </ul>
+                            </div>
+                            <img class="" src="{{ about.signature.url }}" height="35" alt="">
+                            <div class="mt-4">
+                                <a href="#projects" class="btn btn-custom rounded mouse-down">View Portfolio</a>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+            <div class="container pt-100 pt-60">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 ">
+                        <div class="col-12 text-center mt-lg-5">
+                            <div class="section-title mb-lg-0" >
+                                <div class="titles">
+                                    <h4 class="title text-uppercase mb-4 pb-4">Hobbies & Interests</h4>
+                                    <span></span>
+                                </div>
+                                <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 row">
+
+                        {% for hobby in hobbies %}
+                            <div id="d1" class="col-lg-3 col-md-4 col-12 mt-4 pt-2">
+                                <div class="interests-desc bg-light position-relative p-2 rounded">
+                                    <div class="hobbies d-flex">
+                                        <div class="icon text-center rounded-pill mr-4">
+                                            <i style="font-size: 24px" class=" {{ hobby.icon }}"></i>
+                                        </div>
+                                        <div class="content mt-2">
+                                            <h4 class="title mb-0">{{ hobby.name|capfirst }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- About End -->
+
+        <!-- Services Start -->
+        <section class="section bg-light" id="services">
+              <div class="col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center">
+                            <div class="section-title">
+                                <div class="titles">
+                                    <h4 class="title text-uppercase mb-4 pb-4">What I Offer ?</h4>
+                                    <span></span>
+                                </div>
+                                <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div>
+            <div class="container row d-lg-flex flex-lg-row-reverse  justify-content-lg-between justify-content-center" style="margin: 0 auto;">
+                <div class="col-sm-12 col-md-12 col-lg-12 row">
+                    {% for serv in services %}
+                        <div class="col-lg-3 col-md-6 col-12 mt-4 pt-2">
+                            <div class="service-wrapper rounded position-relative text-center border p-4 pt-5 pb-5">
+                                <div class="icon text-custom">
+                                    <i class=" {{ serv.icon }} text-custom"></i>
+                                </div>
+                                <div class="content mt-3">
+                                    <h4 class="title text-uppercase">{{ serv.name|capfirst }}</h4>
+                                    <p class="text-muted mt-3 mb-0 text-justify">{{ serv.description|capfirst|truncatewords:20 }}.</p>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    {% endfor %}
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Services End -->
+
+        <!-- Counter Start -->
+        <section class="section-two" style="background: url({{ counter_image.image.url }}) no-repeat center">
+            <div class="bg-overlay"></div>
+            <div class="container">
+                <div class="row" id="counter">
+                    <div class="col-lg-6 col-sm-12 col-md-6">
+                        <div class="counter-box rounded p-4 text-center">
+                            <div class="counter-icon">
+                                <i class="mdi mdi-emoticon-happy-outline text-custom"></i>
+                            </div>
+                            <h5 class="counter-head mt-3 text-white">Happy Client</h5>
+                            <h2 class="counter-value mb-0 text-white" data-count="{{ pcs.happy_clients }}">{{ pcs.happy_clients }}</h2>
+                        </div><!--end counter box-->
+                    </div><!--end col-->
+
+                    <div class="col-lg-6 col-sm-12 col-md-6">
+                        <div class="counter-box rounded p-4 text-center">
+                            <div class="counter-icon">
+                                <i class="mdi mdi-trophy-award text-custom"></i>
+                            </div>
+                            <h5 class="counter-head mt-3 text-white">Logo's Done</h5>
+                            <h2 class="counter-value mb-0 text-white" data-count="{{ logo_done }}">{{ logo_done }}</h2>
+                        </div><!--end counter box-->
+                    </div><!--end col-->
+
+                    <div class="col-lg-6 col-sm-12 col-md-6">
+                        <div class="counter-box rounded p-4 text-center">
+                            <div class="counter-icon">
+                                <i class="mdi mdi-coffee-outline text-custom"></i>
+                            </div>
+                            <h5 class="counter-head mt-3 text-white">Cup of Coffee</h5>
+                            <h2 class="counter-value mb-0 text-white" data-count="{{ pcs.cups_of_coffee }}">{{ pcs.cups_of_coffee }}</h2>
+                        </div><!--end counter box-->
+                    </div><!--end col-->
+
+                    <div class="col-lg-6 col-sm-12 col-md-6">
+                        <div class="counter-box rounded p-4 text-center">
+                            <div class="counter-icon">
+                                <i class="mdi mdi-monitor text-custom"></i>
+                            </div>
+                            <h5 class="counter-head mt-3 text-white">Project Complete</h5>
+                            <h2 class="counter-value mb-0 text-white" data-count="{{ pro_done }}">{{ pro_done }}</h2>
+                        </div><!--end counter box-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Counter End -->
+
+        <!-- Resume End -->
+        <section class="section" id="resume">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">Work Participation</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="main-icon text-center mt-4 pt-2">
+                            <i class="pe-7s-study rounded-pill"></i>
+                        </div>
+                        <div class="timeline-page pt-4 position-relative">
+                            {% for wp in participations %}
+                                <div class="timeline-item mb-4">
+                                    <div class="row">
+                                         {% if forloop.counter|divisibleby:2 %}
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="duration date-label-left border rounded p-2 pl-4 pr-4 position-relative shadow text-left">{{ wp.start_end_dates }}</div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="event event-description-right rounded p-4 border float-left text-left">
+                                                    <h4 class="title mb-0 text-capitalize">{{ wp.title }}</h4>
+                                                    <small class="company">{{ wp.position }}</small>
+                                                    <p class="timeline-subtitle mt-3 mb-0 text-muted">{{ wp.description }}</p>
+                                                </div>
+                                            </div><!--end col-->
+                                        {% else %}
+                                             <div class="col-lg-6 col-md-6 col-sm-6 order-sm-1 order-2">
+                                                <div class="event event-description-left rounded p-4 border float-left text-right">
+                                                    <h4 class="title mb-0 text-capitalize">{{ wp.title }}</h4>
+                                                    <small class="company">{{ wp.position}}</small>
+                                                    <p class="timeline-subtitle mt-3 mb-0 text-muted">{{ wp.description }}</p>
+                                                </div>
+                                            </div><!--end col-->
+                                             <div class="col-lg-6 col-md-6 col-sm-6 order-sm-2 order-1">
+                                                <div class="duration duration-right rounded border p-2 pl-4 pr-4 position-relative shadow text-left">
+                                                    {{ wp.start_end_dates }}</div>
+                                            </div><!--end col-->
+                                        {% endif %}
+                                    </div><!--end row-->
+                                </div><!--end timeline item-->
+                            {% endfor %}
+
+{#                            <div class="timeline-item mb-4">#}
+{#                                <div class="row">#}
+{#                                    <div class="col-lg-6 col-md-6 col-sm-6 order-sm-1 order-2">#}
+{#                                        <div class="event event-description-left rounded p-4 border float-left text-right">#}
+{#                                            <h4 class="title mb-0 text-capitalize">Web Developer</h4>#}
+{#                                            <small class="company">Oppo - HR Manager</small>#}
+{#                                            <p class="timeline-subtitle mt-3 mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lacinia magna vel molestie faucibus. Donec auctor et urnaLorem ipsum dolor sit amet.</p>#}
+{#                                        </div>#}
+{#                                    </div><!--end col-->#}
+{#                                    <div class="col-lg-6 col-md-6 col-sm-6 order-sm-2 order-1">#}
+{#                                        <div class="duration duration-right rounded border p-2 pl-4 pr-4 position-relative shadow text-left">2012 - 2015</div>#}
+{#                                    </div><!--end col-->#}
+{#                                </div><!--end row-->#}
+{#                            </div><!--end timeline item-->#}
+{##}
+{#                            <div class="timeline-item mb-4">#}
+{#                                <div class="row">#}
+{#                                    <div class="col-lg-6 col-md-6 col-sm-6">#}
+{#                                        <div class="duration date-label-left border rounded p-2 pl-4 pr-4 position-relative shadow text-left"> 2008 - 2010</div>#}
+{#                                    </div><!--end col-->#}
+{#                                    <div class="col-lg-6 col-md-6 col-sm-6">#}
+{#                                        <div class="event event-description-right rounded p-4 border float-left text-left">#}
+{#                                            <h4 class="title mb-0 text-capitalize">Graphic Designer</h4>#}
+{#                                            <small class="company">Apple - Testor</small>#}
+{#                                            <p class="timeline-subtitle mt-3 mb-0 text-muted">Therefore always free from repetition, injected humour, or non-characteristic words etc. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, </p>#}
+{#                                        </div>#}
+{#                                    </div><!--end col-->#}
+{#                                </div><!--end row-->#}
+{#                            </div><!--end timeline item-->#}
+                        </div><!--end timeline page-->
+                        <!-- TIMELINE END -->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Resume End -->
+
+        <!-- Skill & CTA START -->
+        <section class="cta-full bg-light">
+            <div class="container-fluid">
+                <div class="row position-relative">
+
+                    <div class="col-lg-12 ">
+                        <div class="cta-full-img-box">
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-center">
+                                    <div class="section-title">
+                                        <div class="titles">
+                                            <h4 class="title text-uppercase mb-4 pb-4">Work Expertise</h4>
+                                            <span></span>
+                                        </div>
+                                        <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <div class="row justify-content-center">
+                                <div class="col-sm-12 col-md-12 col-lg-5 my-height"  >
+                                    <div class="row h-100 padding-less2 img position-relative overflow-hidden " data-jarallax='{"speed": 0.5}'>
+                                        <img class="expert_image" src="{% if not expertise_image %}{% static 'images/blog/sideboard.gif' %}{% else %}{{expertise_image.image.url}}"{% endif %}"  alt="">
+                                        <div class="my_animated_ovelay overlay-animated" ></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-7">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-3 col-md-4 col-12">
+                                            <ul class="nav nav-pills flex-column" id="pills-tab" role="tablist">
+                                                {% for cate in categories %}
+                                                    <li class="nav-item mt-2 pt-2">
+                                                        <a class="nav-link {% if forloop.first %} active {% endif %}" id="pills-{{ cate.id }}-tab" data-toggle="pill" href="#pills{{ cate.id }}" role="tab" aria-controls="pills-cloud" aria-selected="false">
+                                                            <div class="skill-container text-center pt-1 pb-1">
+                                                                <h4 class="title font-weight-normal mb-0 ">{{ cate.name|truncatewords:1 }} </h4>
+                                                            </div>
+                                                        </a><!--end nav link-->
+                                                    </li><!--end nav item-->
+                                                {% endfor %}
+
+
+                                            </ul><!--end nav pills-->
+                                        </div><!--end col-->
+
+                                        <div class="col-lg-9 col-md-8 col-12">
+                                            <div class="tab-content pl-lg-4" id="pills-tabContent">
+                                                {% for cate in categories %}
+                                                    <div class="tab-pane fade {% if forloop.first %} show active {% endif %}" id="pills{{ cate.id }}" role="tabpanel" aria-labelledby="pills-{{ cate.id }}-tab">
+                                                        {% for exp in expertise %}
+                                                            {% if cate.id == exp.category.id %}
+                                                                <div class="progress-box mt-4 pt-2">
+                                                                    <h6 class="font-weight-normal">{{ exp.language }}</h6>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar position-relative bg-custom" style="width:{{ exp.percentage }}%;">
+                                                                            <div class="progress-value d-block text-muted h6">
+                                                                                {{ exp.percentage }}%</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div><!--end process box-->
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div><!--end teb pane-->
+                                                {% endfor %}
+
+                                            </div><!--end tab content-->
+                                        </div><!--end col-->
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                        </div> <!-- end about detail -->
+                    </div> <!-- end col -->
+                </div><!--end row-->
+            </div><!--end container fluid-->
+        </section><!--end section-->
+        <!-- Skill & CTA End -->
+
+        <!-- Projects End -->
+        <section class="section" id="projects">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">My Portfolio</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row justify-content-center mt-4 pt-2">
+                    <div class="col-12 text-center">
+                        <ul class="col container-filter portfolioFilter list-unstyled mb-0 text-center" id="filter">
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2 active" data-filter="*">All</a></li>
+                            {% for cate in categories %}
+                                <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2" data-filter=".c-{{ cate.id }}">{{ cate.name|capfirst }}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+            <div class="container">
+                <div class="portfolioContainer row pt-2 mt-4">
+                    {% for port in projects %}
+
+                        <div class="col-lg-3 col-md-4 p-0 c-{{ port.category.id }}">
+                            <div class="portfolio-box position-relative ml-0 mr-0">
+                                <div class="work-img position-relative overflow-hidden" style="height: 270px;">
+                                    {% if port.status == 'COOMINGSOON' %}
+                                        <div class="comming-soon position-absolute">
+                                            <h4 class="text-white">Cooming Soon</h4>
+                                        </div>
+                                    {% endif %}
+                                    <img src="{{ port.image.url }}" style="width: 100%; height: 100%;" class="img-fluid" alt="work-image">
+                                    <div class="overlay-work">
+                                        <div class="icon text-center">
+                                            <a  class="mfp-image" href="{{ port.image.url }}" data-toggle="tooltip" data-placement="left" title="{{ port.name|title }}"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                        </div>
+                                        <div class="work-content">
+                                            <h6 class="title mb-0"><a target="_blank" href="{{ port.link }}" class="text-light text-uppercase">{{ port.name|capfirst }}</a></h6>
+                                            <small class="text-white-50">{{ port.category.name|title }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    {% endfor %}
+
+
+                </div><!--end row-->
+                <div class="row justify-content-center mt-4 pt-2">
+                    <div class="col-12 text-center">
+                        <a href="{% url 'frontend:portfolio' %}" class="btn btn-custom rounded">See more <i class="mdi mdi-chevron-right"></i></a>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Projects End -->
+
+
+
+
+
+        <!-- Cta Start -->
+        <section class="section" style="background: url({{ available_image.image.url }}) no-repeat center; height: 100vh;">
+            <div class="bg-overlay"></div>
+            <div class="container h-100"  >
+                <div class="row justify-content-center align-items-center" style="height: 100%;">
+                    <div class="col-12 text-center">
+                        <h4 class="text-light">I Am Available For Freelancer Project.</h4>
+                        <p class="text-white-50 mx-auto mt-4 para-desc">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        <div class="mt-4">
+                            <a href="#contact" class="btn btn-outline-white rounded mouse-down rubberBand">hire me <i class="mdi mdi-chevron-down"></i></a>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Cta End -->
+
+
+
+        <!-- Contact Start -->
+        <section class="section pb-0" id="contact">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">Contact Me</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row reverse_at_768">
+                    <div class="col-sm-12 col-md-12 col-lg-5">
+                        <div class="col-md-12 mt-4 pt-2">
+                            <div class="contact-detail text-center">
+                                <div class="icon">
+                                    <i class="mdi mdi-phone"></i>
+                                </div>
+                                <div class="content mt-3">
+                                    <h4 class="title text-uppercase">Phone</h4>
+                                    <p class="text-muted text-justify">Promising development turmoil inclusive education transformative community</p>
+                                    <a href="tel:+152534-468-854" class="text-custom">{{ about.phone }}</a>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-12 mt-4 pt-2">
+                            <div class="contact-detail text-center">
+                                <div class="icon">
+                                    <i class="mdi mdi-email"></i>
+                                </div>
+                                <div class="content mt-3">
+                                    <h4 class="title text-uppercase">Email</h4>
+                                    <p class="text-muted text-justify">Promising development turmoil inclusive education transformative community</p>
+                                    <a href="mailto:contact@example.com" class="text-custom">{{ about.email }}</a>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-12 mt-4 pt-2">
+                        <div class="contact-detail text-center">
+                            <div class="icon">
+                                <i class="mdi mdi-map-marker"></i>
+                            </div>
+                            <div class="content mt-3">
+                                <h4 class="title text-uppercase">Location</h4>
+                                <p class="text-muted text-justify">C/54 Northwest Freeway, Suite 558, <br>Houston, USA 485</p>
+{#                                <a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9407101781107!2d36.92308971502147!3d-1.201765835879431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3fc70367960d%3A0x77880bc261bc5e12!2sKahawa%20Wendani!5e0!3m2!1sen!2ske!4v1588432291341!5m2!1sen!2ske" class="video-play-icon text-custom">View on Google map</a>#}
+                                <a href="{{ about.location_url }}" class="video-play-icon text-custom">View on Google map</a>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    </div><!--end row-->
+                    <div class="col-sm-12 col-md-12 col-lg-7 p-lg-5 custom-height d-flex justify-content-center">
+                        <div class="row position-relative overflow-hidden" style="height: 100%; width: 100%;">
+                            <img src="{{ contuctus_image.image.url }}" style="position: absolute;top: 0; left:0; background-repeat: no-repeat; background-position: center;  height: 100%; width: 100%; object-fit:contain;" alt="">
+                            <div class="my_animated_ovelay overlay-animated" ></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div><!--end container-->
+        </section><!--end section-->
+
+
+        <section class="section pt-5 mt-3 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">Send a Message</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-12">
+                        <div class="custom-form mb-sm-30">
+                            <div id="message"></div>
+
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row h-100 w-100 position-relative overflow-hidden m-0">
+                                            <img src="{{ sendmsgs_image.image.url }}" style="background-repeat: no-repeat; background-position: center;  height: 100%; width: 100%; object-fit:contain;" alt="">
+                                             <div class="my_animated_ovelay overlay-animated" ></div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-6">
+                                        <form action="{% url 'frontend:addmessage' %}" method="post" id="contact-form" >
+                                            <div class="row">
+                                                {% csrf_token %}
+
+                                                 <div class="col-lg-6 col-sm-12 p-3 col-md-6">
+                                                   <label for="first_name"  class="inp">
+                                                      <input type="text" name="first_name"  id="first_name" placeholder="&nbsp;">
+                                                      <span class="label">First Name</span>
+                                                      <span class="focus-bg"></span>
+                                                    </label>
+                                                 </div><!--end col-->
+                                                 <div class="col-lg-6 col-sm-12 p-3 col-md-6">
+                                                    <label for="last_name" class="inp">
+                                                      <input type="text" name="last_name" id="last_name" placeholder="&nbsp;">
+                                                      <span class="label">Last Name</span>
+                                                      <span class="focus-bg"></span>
+                                                    </label>
+                                                 </div><!--end col-->
+
+
+                                                <div class="col-lg-12 col-md-6 p-3">
+                                                    <label for="email" class="inp">
+                                                      <input type="email" name="email" id="email" placeholder="&nbsp;">
+                                                      <span class="label">Email</span>
+                                                      <span class="focus-bg"></span>
+                                                    </label>
+                                                </div><!--end col-->
+                                                <div class="col-lg-12 p-3">
+                                                    <label for="subject" class="inp">
+                                                      <input type="text" name="subject" id="subject" placeholder="&nbsp;">
+                                                      <span class="label">Subject</span>
+                                                      <span class="focus-bg"></span>
+                                                    </label>
+                                                </div><!--end col-->
+                                                <div class="col-lg-12 p-3">
+                                                    <div class="form-group">
+                                                        <textarea name="message" id="messsage" rows="4" class="form-control border rounded"  placeholder="Your Message :"></textarea>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                             </div><!--end row-->
+                                             <div class="row">
+                                                <div class="col-sm-12 text-right d-flex align-items-center justify-content-end">
+                                                    <div id="spinner_loader" class="spinner-border text-danger" style="margin-right: 10px;" role="status">
+                                                      <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                    <button type="submit"  name="send" class="submitBnt btn btn-custom rounded rubberBand" value="Send Message">Submit </button>
+                                                </div><!--end col-->
+                                             </div><!--end row-->
+                                        </form><!--end form-->
+                                    </div><!--end col-->
+
+
+                                </div><!--end row-->
+
+
+                        </div><!--end custom-form-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Contact End -->
+
+        <section class="section pt-5 mt-3 ">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">Location</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-12">
+                        <div class="col">
+                         <iframe  frameborder="0" style="border:0; width: 100%;height: 500px" allowfullscreen="" aria-hidden="false" tabindex="0" src="{{ about.location_url }}" ></iframe>
+
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- Contact End -->
+
+
+
+ {% endblock content %}
+{% block script %}
+    <script>
+
+        $(document).ready(function(){
+           var spinner =  $("#spinner_loader");
+
+           $("#contact-form").submit(function(e){
+                e.preventDefault();
+                spinner.fadeIn( "slow" );
+                var new_form_data = new FormData(this);
+                {#var new_form_data =$("#contact-form").serialize() ;#}
+
+                var fname =$("#first_name").val();
+                var lname =$("#last_name").val();
+                var email =$("#email").val();
+                var subject =$("#subject").val();
+                var message =$("#message").val();
+                 console.log(fname,lname,email,subject,message);
+                $.ajax({
+                    method : $("#contact-form").attr('method'),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+
+                    url :  {% url 'frontend:addmessage' %},
+                    data: new_form_data,
+                    {##}
+                    success : function(response){
+
+                        setTimeout(
+                            function () {
+                                spinner.fadeOut( "slow" );
+                                 if (response.results === 'success') {
+                                    console.log(response.results);
+                                    $("#contact-form")[0].reset();
+                                    swal.fire({
+                                        title: "Success!",
+                                        text: response.form_success,
+                                        {#text: "sent",#}
+                                        type: "success",
+                                        confirmButtonText: "Continue",
+                                    });
+
+                                }
+                                else {
+                                    spinner.fadeOut( "slow" );
+                                    console.log(response.results);
+                                    swal.fire({
+                                        title: "Error!",
+                                        text: "Form Is Invalid. Please Fill Each Input: "+ "\n" + response.form_error_message,
+                                        type: "error",
+                                        confirmButtonText: "Retry"
+                                    });
+                                }
+                            },3000
+                        )
+
+
+                    },
+                    error : function(response){
+                        spinner.fadeOut( "slow" );
+                        console.log(response);
+
+
+                    }
+                });
+           });
+        });
+    </script>
+{% endblock script %}

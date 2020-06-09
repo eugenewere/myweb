@@ -1,0 +1,200 @@
+.bg-custom,
+.btn.btn-custom, 
+.btn.btn-custom-outline:hover, 
+.btn.btn-custom-outline:focus, 
+.btn.btn-custom-outline:active, 
+.btn.btn-custom-outline.active, 
+.btn.btn-custom-outline.focus,
+.btn.btn-outline-white:hover, 
+.btn.btn-outline-white:focus, 
+.btn.btn-outline-white:active, 
+.btn.btn-outline-white.active, 
+.btn.btn-outline-white.focus,
+.nav-pills .nav-link.active,
+.section-title .titles:after, 
+.section-title .titles:before,
+.social-icon li a:hover,
+#preloader #status .spinner .dot1, 
+#preloader #status .spinner .dot2,
+.back-to-top:hover,
+.login-button,
+.bg-hero.bg-animation-right:after,
+.service-wrapper:after,
+.container-filter li a:hover,
+.container-filter li a.active,
+.owl-theme .owl-controls .owl-page.active span,
+.owl-theme .owl-controls.clickable .owl-page:hover span{
+    background-color: #c52c20 !important;
+}
+
+.text-custom,
+.btn.btn-custom-outline,
+.navbar-custom .navbar-nav .nav-item .nav-link:hover, 
+.navbar-custom .navbar-nav .nav-item .nav-link:active,
+.navbar-custom .navbar-nav .nav-item.active .nav-link,
+.navbar-custom .navbar-nav.navbar-nav-link .nav-item .nav-link:hover, 
+.navbar-custom .navbar-nav.navbar-nav-link .nav-item .nav-link:active,
+.navbar-custom .navbar-nav.navbar-nav-link.active .nav-link,
+.nav-sticky.navbar-custom .navbar-nav .nav-item .nav-link:hover, 
+.nav-sticky.navbar-custom .navbar-nav .nav-item .nav-link:active,
+.nav-sticky.navbar-custom .navbar-nav .nav-item.active .nav-link,
+.interests-desc:hover .icon,
+.service-wrapper:hover .content .title,
+.timeline-page .timeline-item .event:hover .title,
+.portfolio-box .work-img .overlay-work .icon i:hover,
+.portfolio-box .work-img .overlay-work .work-content .title:hover a,
+.blog-post .content .title:hover,
+.blog-post .content a:hover{
+    color: #c52c20 !important;
+}
+
+.btn.btn-custom-outline,
+.btn.btn-custom-outline:hover, 
+.btn.btn-custom-outline:focus, 
+.btn.btn-custom-outline:active, 
+.btn.btn-custom-outline.active, 
+.btn.btn-custom-outline.focus,
+.btn.btn-outline-white:hover, 
+.btn.btn-outline-white:focus, 
+.btn.btn-outline-white:active, 
+.btn.btn-outline-white.active, 
+.btn.btn-outline-white.focus,
+.nav-pills .nav-link.active,
+.section-title .titles span:before, 
+.section-title .titles span:after,
+.social-icon li a:hover,
+.container-filter li a:hover, 
+.container-filter li a.active
+.owl-theme .owl-controls .owl-page span{
+    border-color: #c52c20 !important;
+}
+
+
+/*new tweeks*/
+.my_slider{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+
+  }
+  .owl-item, .owl-stage-outer, .owl-stage{
+      height: 100% !important;
+  }
+  .owl-carousel .owl-dots {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(-50%);
+  }
+
+  .owl-carousel .owl-dots .owl-dot.active {
+      width: 25px;
+      height: 25px;
+      margin: 10px;
+      border-radius: 50%;
+      background: #c52c20;
+      transition: 1s all;
+      /*clip-path: polygon(50% 0%, 0% 100%, 100% 100%);*/
+      transform: rotate(360deg);
+      clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%);
+
+
+  }
+  .owl-dot:after {
+      display: none;
+  }
+
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .inp {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .inp .label {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    pointer-events: none;
+  }
+  .inp .focus-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: -1;
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    -webkit-transform-origin: left;
+            transform-origin: left;
+  }
+  .inp input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+         appearance: none;
+    width: 100%;
+    border: 0;
+    font-family: inherit;
+    padding: 16px 12px 0 12px;
+    height: 56px;
+    font-size: 16px;
+    font-weight: 400;
+    background: rgba(0, 0, 0, 0.00);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    color: #000;
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+  }
+  .inp input:hover {
+    background: rgba(0, 0, 0, 0.04);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+  }
+  .inp input:not(:placeholder-shown) + .label {
+    color: rgba(0, 0, 0, 0.5);
+    -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+            transform: translate3d(0, -12px, 0) scale(0.75);
+  }
+  .inp input:focus {
+    background: rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-shadow: inset 0 -2px 0 #c52c20;;
+  }
+  .inp input:focus + .label {
+    color: #c52c20;;
+    -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+            transform: translate3d(0, -12px, 0) scale(0.75);
+  }
+  .inp input:focus + .label + .focus-bg {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+  }
+
+  .ck-editor__editable{
+      height: 220px;
+      background: rgba(0, 0, 0, 0.02);
+  }
+/* end of new tweeks*/

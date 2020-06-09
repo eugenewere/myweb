@@ -1,0 +1,201 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block style %}
+    <style>
+        .counter_wrapper{
+            position: relative;
+            border: 1px solid #f3f3f3;
+
+            padding: 10px;
+            top:0;
+            left: 0;
+            background-color: #f3f3f3;
+            height: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 9px;
+            box-shadow: 2px 3px 20px #b3b0b0;
+        }
+        .count{
+            font-size: 60px;
+            font-family: "Heebo", sans-serif;
+            font-weight: 800;
+            color: indianred;
+        }
+        .counter_wrapper:hover{
+
+        }
+        .counter_text{
+            bottom: 0;
+            position: absolute;
+            font-size: 21px;
+            margin-left: 20px;
+            font-weight: 800;
+        }
+    </style>
+{% endblock style %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Progress Counter </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding A Progress Counter</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+                      <button type="button" class="btn btn-gradient-primary " data-toggle="modal" data-target="#exampleModal">Add A Progress Counter<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                    {% for pc in pcs|slice:1 %}
+
+                      <button type="button" class="btn btn-gradient-success " data-toggle="modal" data-target="#editcategory{{ pc.id }}">Edit Progress Counter<i class="mdi mdi-playlist-plus ml-1"></i></button>
+                      <a type="button" href="{% url 'backend:deleteprogresscounter' pc.id  %}" class="btn btn-gradient-info">Delete Progress Counter<i class="mdi mdi-playlist-plus ml-1"></i></a>
+                  {% endfor %}
+
+                    </div>
+
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding A  Progress Counter</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                              <form action="{% url 'backend:addprogresscounter' %}" id="addcategory" method="post">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label class=" form-control-label">Happy Clients</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-navicon"></i></div>
+                                            <input  class="form-control" name="happy_clients" id="cname" type="text">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label class=" form-control-label">Cups of coffee</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-id-card"></i></div>
+                                            <input  class="form-control" name="cups_of_coffee" id="icon" type="text">
+                                        </div>
+                                     </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                     {% for pc in pcs %}
+                         <div class="modal fade" id="editcategory{{ pc.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing a Hobby</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editprogresscounter' pc.id %}" id="addcategory" method="post">
+                                    <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label class=" form-control-label">Happy Clients</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-navicon"></i></div>
+                                            <input  class="form-control" value="{{ pc.happy_clients }}" name="happy_clients" id="cname" type="text">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label class=" form-control-label">Cups of coffee</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-id-card"></i></div>
+                                            <input  class="form-control" value="{{ pc.cups_of_coffee }}" name="cups_of_coffee" id="icon" type="text">
+                                        </div>
+                                     </div>
+
+                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <div class="row py-5">
+                            <div class="col-sm-12 col-md-3" style="height: 200px;">
+                                <div class="counter_wrapper btn">
+                                     <span class="count">{% for p in pcs %} {{ p.cups_of_coffee }} {% endfor %}</span>
+                                </div>
+                                <span class="counter_text">Cups of Coffee</span>
+                            </div>
+                            <div class="col-sm-12 col-md-3" style="height: 200px;">
+                                <div class="counter_wrapper btn">
+                                     <span class="count">{% for p in pcs %} {{ p.happy_clients }} {% endfor %}</span>
+                                </div>
+                                <span class="counter_text">Happy Clients</span>
+                            </div>
+                            <div class="col-sm-12 col-md-3" style="height: 200px;">
+                                <div class="counter_wrapper btn">
+                                     <span class="count">{{ pro_done }}</span>
+                                </div>
+                                <span class="counter_text">Projects</span>
+                            </div>
+                            <div class="col-sm-12 col-md-3" style="height: 200px;">
+                                <div class="counter_wrapper btn">
+                                     <span class="count">{{ logo_done }}</span>
+                                </div>
+                                <span class="counter_text">Logos</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}
+{% block script %}
+    <script>
+        $('.count').each(function () {
+            $(this).prop('Counter',0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 4000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        });
+    </script>
+{% endblock script %}

@@ -1,0 +1,374 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+{% load call_method %}
+{% block style %}
+    <style>
+        .header-text{
+                position: absolute;
+                /* bottom: -15px; */
+                top: 70%;
+                right: 9%;
+                font-size: 50px;
+                transition: 1s;
+        }
+        @media screen and (max-width: 900px) {
+            .header-text{
+                font-size: 45px;
+             }
+        }
+        @media screen and (max-width: 768px) {
+            .header-text{
+                font-size: 40px;
+                right: 50%;
+                transform: translateX(50%);
+             }
+        }
+        @media screen and (max-width: 600px) {
+            .header-text{
+                font-size: 30px;
+                right: 50%;
+                transform: translateX(50%);
+             }
+        }
+        @media screen and (max-width: 400px) {
+            .header-text{
+                font-size: 25px;
+                right: 50%;
+                transform: translateX(50%);
+             }
+        }
+
+    </style>
+{% endblock style %}
+{% block content %}
+    <!-- Navbar Start -->
+    <nav style="z-index: 10000;
+                {% if announces.count > 0 %}
+                    display: flex; flex-direction: column; padding: 0;
+                {% endif %}
+                {% if announces.count == 0 %}
+                    padding: 20px 0;
+                {% endif %} "
+             class="navbar navbar-expand-lg fixed-top navbar-custom navbar-light sticky">
+            {% if announces.count > 0 %}
+                {% for a in announces %}
+                    <div style="z-index: 10000; position: relative; width: 100%;height: 40px; margin-bottom: 10px; background: {{ a.backgroud_color }}; overflow: hidden;" class="">
+                        <div class="d-flex container justify-content-between align-items-center" style="height: 100%;">
+                            <span style="color: {{ a.text_color }};">
+                                {% if a.icon %}
+                                    <i class="{{ a.icon }} px-2"></i>
+                                {% endif %}
+                                {{ a.message|capfirst }}</span>
+                            <span style="color: {{ a.text_color }};" aria-hidden="true">&times;</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+    		<div class="container " {% if announces.count > 0 %} style="padding: 15px 0;" {% endif %}>
+			    <a class="navbar-brand" href="{% url 'frontend:home' %}">
+                    <img src="{% static 'images/logo.png' %}" class="l-dark" height="15" alt="">
+                    <img src="{% static 'images/logo-light.png' %}" class="l-light" height="15" alt="">
+                </a>
+			    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			        <span class="mdi mdi-menu"></span>
+			    </button><!--end button-->
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'frontend:home' %}">Home</a>
+                    </li><!--end nav item-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frontend:home' %}">Services</a>
+                    </li><!--end nav item-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frontend:home' %}">Resume</a>
+                    </li><!--end nav item-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frontend:home' %}">Projects</a>
+                    </li><!--end nav item-->
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frontend:home' %}">Contact</a>
+                    </li><!--end nav item-->
+                </ul>
+            </div>
+
+        </div><!--end container-->
+    </nav><!--end navbar-->
+    <!-- Navbar End -->
+
+    <section class="bg-home2" style="height: 50%!important;" id="home">
+        <div class="col-sm-12 h-100">
+            <div class="row h-100">
+                <div style=" width: 100%; height: 100%; position: relative;" >
+{#                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">#}
+{#              <path fill="#ff5500" fill-opacity="1" d="M0,224L34.3,240C68.6,256,137,288,206,304C274.3,320,343,320,411,288C480,256,549,192,617,176C685.7,160,754,192,823,176C891.4,160,960,96,1029,69.3C1097.1,43,1166,53,1234,53.3C1302.9,53,1371,43,1406,37.3L1440,32L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"></path>#}
+{#            </svg>#}
+                    <svg   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                      <path fill="#ff5500" fill-opacity="1" d="M0,160L24,176C48,192,96,224,144,250.7C192,277,240,299,288,256C336,213,384,107,432,90.7C480,75,528,149,576,154.7C624,160,672,96,720,85.3C768,75,816,117,864,128C912,139,960,117,1008,117.3C1056,117,1104,139,1152,138.7C1200,139,1248,117,1296,117.3C1344,117,1392,139,1416,149.3L1440,160L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"></path>
+                    </svg>
+                    <h4 class="title text-uppercase mb-4 pb-4 header-text">My Portfolio</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Projects End -->
+    <section class="section" id="projects" >
+
+            <div class="container" >
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title">
+                            <div class="titles">
+                                <h4 class="title text-uppercase mb-4 pb-4">My Portfolio</h4>
+                                <span></span>
+                            </div>
+                            <p class="text-muted mx-auto para-desc mb-0 ">Obviously I'M Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row justify-content-center mt-4 pt-2">
+                    <div class="col-12 text-center">
+                        <ul class="col container-filter portfolioFilter list-unstyled mb-0 text-center" id="filter">
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2 active" data-filter="*">All</a></li>
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2" data-filter=".web">Wed Design</a></li>
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2" data-filter=".brand">Branding</a></li>
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2" data-filter=".studio">Studio</a></li>
+                            <li class="list-inline-item"><a class="categories rounded pl-3 pr-3 mb-2" data-filter=".graphic">Graphics</a></li>
+                        </ul>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+            <div style="height: 100vh;" class="container">
+                <div class="portfolioContainer row pt-2 mt-4">
+                    <div class="col-lg-3 col-md-4 p-0 web">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/01.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/01.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 brand">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/02.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/02.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 studio">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/03.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/03.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 graphic">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/04.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/04.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 web">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/05.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/05.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 brand">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/06.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/06.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 web">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/01.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/01.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 brand">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/02.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/02.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 studio">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/03.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/03.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 graphic">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/04.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/04.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 web">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/05.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/05.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-3 col-md-4 p-0 brand">
+                        <div class="portfolio-box position-relative ml-0 mr-0">
+                            <div class="work-img position-relative overflow-hidden">
+                                <img src="{% static 'images/portfolio/06.jpg' %}" class="img-fluid" alt="work-image">
+                                <div class="overlay-work">
+                                    <div class="icon text-center">
+                                        <a class="mfp-image" href="{% static 'images/portfolio/06.jpg' %}" title="Minimal Product"><i class="mdi mdi-arrow-expand-all text-white"></i></a>
+                                    </div>
+                                    <div class="work-content">
+                                        <h6 class="title mb-0"><a href="javascript:void(0)" class="text-light text-uppercase">Work Title</a></h6>
+                                        <small class="text-white-50">Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                </div><!--end row-->
+                <div class="row justify-content-center mt-4 pt-2">
+                    <div class="col-12 text-center">
+                        <a href="javascript:void(0)" class="btn btn-custom rounded">See more <i class="mdi mdi-chevron-right"></i></a>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+    </section><!--end section-->
+    <!-- Projects End -->
+
+{% endblock content %}
+{% block script %}
+    <script>
+             $(window).on('load', function() {
+                $('#status').fadeOut();
+                $('#preloader').delay(350).fadeOut('slow');
+                $('body').delay(350).css({
+                    'overflow': 'visible'
+                });
+            });
+    </script>
+{% endblock script %}

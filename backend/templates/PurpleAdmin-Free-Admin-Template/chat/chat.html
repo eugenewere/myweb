@@ -1,0 +1,174 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% load call_method %}
+{% block style %}
+
+{% endblock style %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Chat </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding Chat</h4>
+                    <!-- Modal starts -->
+                    <div class="">
+{#                      <button type="button" class="btn btn-gradient-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Add Chat<i class="mdi mdi-playlist-plus ml-1"></i></button>#}
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <form action="{% url 'backend:addcategory' %}" id="addcategory" method="post">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label class=" form-control-label">Category Name</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="name" id="cname" type="text">
+                                        </div>
+                                        <small class="form-text text-muted">ex. Logo</small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                    {% for name in names_list %}
+                         <div class="modal fade" id="editcategory{{ name|cut:'@'|cut:'.'}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                          <div class="col-sm-12 col-md-8 chat-container-wrapper " style="height: 50vh; overflow-y:auto; ">
+                                              <div style="width: max-content;">
+                                                  {% for message in request|get_messages:name %}
+                                                        <div style="background: indianred; color: white; width: max-content; border-radius: 9px;" class="chat-bubble  {% if not request.user %} outgoing-chat {% else %} incoming-chat {% endif %}">
+                                                          <div class="chat-message " style="padding: 10px 40px 10px 10px;">
+                                                            <h3 class="font-weight-boldt">{{ message.first_name|title }}  {{ message.last_name|title }}  </h3>
+                                                            <h5 class="font-weight-medium" style="text-underline: white;">{{ message.subject|title }}</h5>
+                                                            <p class="font-weight-lighter">{{ message.message }}.</p>
+
+                                                          </div>
+
+                                                        </div>
+                                                       <div style="margin-bottom: 20px; padding-left: 10px; font-variant: all-small-caps; display: flex; justify-content: space-between;">
+                                                           {{ message.status }}
+                                                            <p style="font-size: 5px;padding-top: 5px" class="seen-text">{{ message.created_at|naturaltime }}</p>
+                                                       </div>
+                                                  {% endfor %}
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-12 col-md-4 chat-text-field">
+                                            <form action="{% url 'backend:sendemail' %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <button type="button" class="input-group-text"><i class="fas fa-closed-captioning icon-sm"></i></button>
+                                                    </div>
+                                                    <input required type="text" name="subject" class="form-control" placeholder="Type a Subject Here">
+                                                    <input type="text" hidden  name="receiver_email" value="{{ name }}" class="form-control" placeholder="">
+
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <button type="button" class="input-group-text"><<i class="fas fa-comment-alt icon-sm"></i>></button>
+                                                    </div>
+                                                    <textarea required  placeholder="Type a message here" name="message" class="form-control" rows="20" id=""></textarea>
+                                                    <div class="input-group-append">
+                                                      <button type="submit" class="input-group-text btn btn-success"><i class="mdi mdi-send icon-sm"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="padding: 0;">
+
+{#                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>#}
+                                </div>
+
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <table id="order-listing" class="table w-100">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Message</th>
+                              <th>Created At</th>
+
+                              <th>Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for name in names_list %}
+                                <tr style="{% if request|messages_status:name %} font-weight: 900;{% endif %}" class="">
+                                      <td>{{ forloop.counter }}</td>
+                                      <td>{{ request|message_names:name|title }}</td>
+                                      <td>{{ name }}</td>
+                                      <td style="white-space: pre-wrap">{{ request|last_message:name }}</td>
+                                      <td>{{ request|last_message_time:name }}</td>
+
+
+                                      <td>
+                                          <a data-toggle="modal" data-target="#editcategory{{ name|cut:'@'|cut:'.'}}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                          <a href="{% url 'backend:deletemessages' name %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                      </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}
+{% block script %}
+{#    <script>#}
+{#            $('#nav-tab a').click(function (e) {#}
+{#              $('#nav-tab li').removeClass('active');#}
+{#              e.preventDefault();#}
+{#              $(this).tab('show');#}
+{#            });#}
+{#    </script>#}
+{% endblock script %}

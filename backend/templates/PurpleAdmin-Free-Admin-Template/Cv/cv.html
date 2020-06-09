@@ -1,0 +1,690 @@
+{% extends 'PurpleAdmin-Free-Admin-Template/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block style %}
+    <style>
+        .kk > a.active{
+            background-color:indianred !important;
+            transition: 1s;
+            transform-origin: left;
+        }
+        .kk > a:not(.active){
+
+            color: indianred !important;
+        }
+
+    </style>
+{% endblock style %}
+{% block content %}
+    <div class="content-wrapper">
+
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+              <i class="mdi mdi-home"></i>
+            </span> Cv </h3>
+          <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Adding Cv</h4>
+                    <!-- Modal starts -->
+{#                    <div class="">#}
+{#                      <button style="font-family: 'Heebo', sans-serif;" type="button" class="btn btn-gradient-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Add Expertise<i class="mdi mdi-playlist-plus ml-1"></i></button>#}
+{#                    </div>#}
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="card-title">Adding Cv</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <form action="{% url 'backend:addexpertise' %}" id="addcategory" method="post">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label for="date" class=" form-control-label"> Language</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input autocapitalize="on" class="form-control" name="language" id="date" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label for="title" class=" form-control-label"> Percentage</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" name="percentage" id="title" type="number" max="100" min="0">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Category</label>
+                                        <select name="category" class="form-control" id="exampleFormControlSelect1">
+                                            <option value="">Choose A Category</option>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Ends -->
+
+                    {% for ex in exps %}
+                         <div class="modal fade" id="editcategory{{ ex.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="card-title">Editing Expertise</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <form action="{% url 'backend:editexpertise' ex.id %}" id="addcategory" method="post">
+                                    <div class="modal-body">
+                                    {% csrf_token %}
+                                     <div class="form-group">
+                                        <label for="date" class=" form-control-label"> Language</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input autocapitalize="on" value="{{ ex.language }}" class="form-control" name="language" id="date" type="text">
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label for="title" class=" form-control-label"> Percentage</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                            <input class="form-control" value="{{ ex.percentage }}" name="percentage" id="title" type="number" max="100" min="0">
+                                        </div>
+                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Category</label>
+                                        <select name="category" class="form-control" id="exampleFormControlSelect1">
+                                            <option value="">Choose A Category</option>
+                                            {% for category in categories %}
+                                                <option {% if ex.category.id == category.id %} selected {% endif %} value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                      </div>
+
+
+                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                         </div>
+                    {% endfor %}
+
+                    <div class="col-12 mt-4">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                          <li class="nav-item kk" role="presentation">
+                            <a class="nav-link nav-pills-success active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Education</a>
+                          </li>
+                          <li class="nav-item kk" role="presentation">
+                            <a class="nav-link nav-pills-success" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Experience</a>
+                          </li>
+                          <li class="nav-item kk" role="presentation">
+                            <a class="nav-link nav-pills-success" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Software</a>
+                          </li>
+                          <li class="nav-item kk" role="presentation">
+                            <a class="nav-link nav-pills-success" id="pills-language-tab" data-toggle="pill" href="#pills-language" role="tab" aria-controls="pills-language" aria-selected="false">Language</a>
+                          </li>
+
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+
+                          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                              <div class="">
+                                  <a href="" data-toggle="modal" data-target="#education" class="btn btn-gradient-success">Add Cv Education</a>
+                                  <div class="modal fade" id="education" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Adding Cv Education</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:addEducation' %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="date" class=" form-control-label"> Start Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input  class="form-control" name="start_d" id="date" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> End date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control" name="end_d" id="title" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> School</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control"  name="school" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Position</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control"  name="position" id="title" type="text">
+                                                        </div>
+                                                     </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% for ed in educations %}
+                                  <div class="modal fade" id="editEducation{{ ed.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Adding Cv Education</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:editEducation' ed.id %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="date" class=" form-control-label"> Start Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input  value="{{ ed.start_d|date:'Y-m-d' }}" class="form-control" name="start_d" id="date" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> End date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.end_d|date:'Y-m-d' }}" class="form-control" name="end_d" id="title" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> School</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.school }}" class="form-control"  name="school" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Position</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.position }}" class="form-control"  name="position" id="title" type="text">
+                                                        </div>
+                                                     </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% endfor %}
+                                    <!-- Modal Ends -->
+                              </div>
+                              <div style="margin-top: 10px;">
+                                  <table id="order-listing" class="table w-100">
+                                      <thead>
+                                        <tr>
+                                          <th>Order #</th>
+                                          <th>School</th>
+                                          <th>Position</th>
+                                          <th>Start Date</th>
+                                          <th>End Date</th>
+                                          <th>Created At</th>
+                                          <th>Updated At</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for ed in educations %}
+                                            <tr>
+                                                  <td>{{ forloop.counter }}</td>
+                                                  <td  >{{ ed.school }}</td>
+                                                  <td  style="white-space: pre-line; ">{{ ed.position }}</td>
+                                                  <td  style="white-space: pre-line;  ">
+                                                     {{ ed.start_d|date:'M-Y' }}
+                                                  </td>
+                                                  <td  style="white-space: pre-line;">
+                                                     {{ ed.end_d|date:'M-Y' }}
+                                                  </td>
+
+                                                  <td>{{ ed.created_at|naturaltime }}</td>
+                                                  <td>{{ ed.updated_at|naturaltime }}</td>
+                                                  <td>
+                                                      <a data-toggle="modal" data-target="#editEducation{{ ed.id }}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                                      <a href="{% url 'backend:deleteEducation' ed.id %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                                  </td>
+                                            </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                  </table>
+                             </div>
+                          </div>
+
+
+
+                          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                              <div class="">
+                                  <a href="" data-toggle="modal" data-target="#experience" class="btn btn-gradient-success">Add Cv Experience</a>
+                                  <div class="modal fade" id="experience" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Adding Cv Experience</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:addExperience' %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="date" class=" form-control-label"> Start Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input  class="form-control" name="start_d" id="date" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> End date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control" name="end_d" id="title" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Institution</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control"  name="institution" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Position</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control"  name="position" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Description</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                     </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% for ed in experiences %}
+                                  <div class="modal fade" id="editExperience{{ ed.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Editing Cv Experience</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:editExperience' ed.id %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="date" class=" form-control-label"> Start Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.start_d|date:'Y-m-d' }}"  class="form-control" name="start_d" id="date" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> End date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.end_d|date:'Y-m-d' }}" class="form-control" name="end_d" id="title" type="date">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Institution</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.institution }}" class="form-control"  name="institution" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Position</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.position }}" class="form-control"  name="position" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Description</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <textarea name="description" class="form-control" id="" cols="30" rows="10">{{ ed.description }}</textarea>
+                                                        </div>
+                                                     </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% endfor %}
+                                    <!-- Modal Ends -->
+                              </div>
+                              <div style="margin-top: 10px;">
+                                  <table id="order-listing" class="table w-100">
+                                      <thead>
+                                        <tr>
+                                          <th>Order #</th>
+                                          <th>School</th>
+                                          <th>Description</th>
+                                          <th>Start Date</th>
+                                          <th>End Date</th>
+                                          <th>Created At</th>
+                                          <th>Updated At</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for ed in experiences %}
+                                            <tr>
+                                                  <td>{{ forloop.counter }}</td>
+                                                  <td  >{{ ed.institution }}</td>
+                                                  <td  style="white-space: pre-line; ">{{ ed.description }}</td>
+                                                  <td  style="white-space: pre-line;  ">
+                                                     {{ ed.start_d|date:'M-Y' }}
+                                                  </td>
+                                                  <td  style="white-space: pre-line;">
+                                                     {{ ed.end_d|date:'M-Y' }}
+                                                  </td>
+
+                                                  <td>{{ ed.created_at|naturaltime }}</td>
+                                                  <td>{{ ed.updated_at|naturaltime }}</td>
+                                                  <td>
+                                                      <a data-toggle="modal" data-target="#editExperience{{ ed.id }}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                                      <a href="{% url 'backend:deleteExperience' ed.id %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                                  </td>
+                                            </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                  </table>
+                             </div>
+                          </div>
+
+
+
+                          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                              <div class="">
+                                  <a href="" data-toggle="modal" data-target="#software" class="btn btn-gradient-success">Add Cv Sofware</a>
+                                  <div class="modal fade" id="software" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Adding Cv Software </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:addSoftware' %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Software</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input autofocus class="form-control"  name="software" id="title" type="text">
+                                                        </div>
+                                                     </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% for ed in software %}
+                                  <div class="modal fade" id="editSoftware{{ ed.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Editing Cv Software</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:editSoftware' ed.id %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Software</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.software }}" class="form-control"  name="software" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% endfor %}
+                                    <!-- Modal Ends -->
+                              </div>
+                              <div style="margin-top: 10px;">
+                                  <table id="order-listing" class="table w-100">
+                                      <thead>
+                                        <tr>
+                                          <th>Order #</th>
+                                          <th>SoftWare</th>
+                                          <th>Created At</th>
+                                          <th>Updated At</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for ed in software %}
+                                            <tr>
+                                                  <td>{{ forloop.counter }}</td>
+                                                  <td  >{{ ed.software }}</td>
+                                                  <td>{{ ed.created_at|naturaltime }}</td>
+                                                  <td>{{ ed.updated_at|naturaltime }}</td>
+                                                  <td>
+                                                      <a data-toggle="modal" data-target="#editSoftware{{ ed.id }}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                                      <a href="{% url 'backend:deleteSoftware' ed.id %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                                  </td>
+                                            </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                  </table>
+                             </div>
+                          </div>
+
+
+
+                          <div class="tab-pane fade" id="pills-language" role="tabpanel" aria-labelledby="pills-language-tab">
+                                <div class="">
+                                  <a href="" data-toggle="modal" data-target="#Language" class="btn btn-gradient-success">Add Cv Language</a>
+                                  <div class="modal fade" id="Language" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Adding Cv Language </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:addLanguage' %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Language</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input class="form-control"  name="language" id="title" type="text">
+                                                        </div>
+                                                     </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% for ed in language %}
+                                  <div class="modal fade" id="editLanguage{{ ed.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog " role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="card-title">Editing Cv Language</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                            <form action="{% url 'backend:editLanguage' ed.id %}" id="addcategory" method="post">
+                                                <div class="modal-body">
+                                                    {% csrf_token %}
+                                                     <div class="form-group">
+                                                        <label for="title" class=" form-control-label"> Language</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon" ><i class="fa fa-usd"></i></div>
+                                                            <input value="{{ ed.language }}" class="form-control"  name="software" id="title" type="text">
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  {% endfor %}
+                                    <!-- Modal Ends -->
+                                </div>
+                                <div style="margin-top: 10px;">
+                                  <table id="order-listing" class="table w-100">
+                                      <thead>
+                                        <tr>
+                                          <th>Order #</th>
+                                          <th>Lnaguage</th>
+                                          <th>Created At</th>
+                                          <th>Updated At</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for ed in language %}
+                                            <tr>
+                                                  <td>{{ forloop.counter }}</td>
+                                                  <td  >{{ ed.language }}</td>
+                                                  <td>{{ ed.created_at|naturaltime }}</td>
+                                                  <td>{{ ed.updated_at|naturaltime }}</td>
+                                                  <td>
+                                                      <a data-toggle="modal" data-target="#editLanguage{{ ed.id }}" href="" class=" w-50 btn btn-gradient-info">Edit</a>
+                                                      <a href="{% url 'backend:deleteLanguage' ed.id %}" class=" w-50 btn btn-gradient-danger">Delete</a>
+                                                  </td>
+                                            </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                  </table>
+                             </div>
+                            </div>
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      </div>
+{% endblock content %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $('a[data-toggle="pill"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if(activeTab){
+                $('#pills-tab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+{% endblock script%}
