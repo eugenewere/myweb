@@ -1,4 +1,5 @@
 EMAIL_HOST_USER ='eugene.were1997@gmail.com'
-    # 'Climatechangebasicske@gmail.com'
 EMAIL_HOST_PASSWORD = 'nonininonini'
-    # 'Brandoxvilla7123'
+AFRICAS_TALKING_KEY = 'f7f592ed7eaa839595e7cd7320824fb58ea800597febfa552618db8f73216241'
+AFRICAS_TALKING_USERNAME = 'eugeneportfolio'
+AFRICAS_TALKING_PHONE = 706833784

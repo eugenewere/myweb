@@ -152,6 +152,9 @@
                           <li class="nav-item kk" role="presentation">
                             <a class="nav-link nav-pills-success" id="pills-language-tab" data-toggle="pill" href="#pills-language" role="tab" aria-controls="pills-language" aria-selected="false">Language</a>
                           </li>
+                          <li class="nav-item">
+                            <a href="{% url 'frontend:view_cv' %}" target="_blank" rel="noopener noreferrer" class="nav-link nav-pills-success text-dark" id="pills-language-tab"  >Preview</a>
+                          </li>
 
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
@@ -285,7 +288,7 @@
                                         {% for ed in educations %}
                                             <tr>
                                                   <td>{{ forloop.counter }}</td>
-                                                  <td  >{{ ed.school }}</td>
+                                                  <td style="white-space: pre-line; " >{{ ed.school }}</td>
                                                   <td  style="white-space: pre-line; ">{{ ed.position }}</td>
                                                   <td  style="white-space: pre-line;  ">
                                                      {{ ed.start_d|date:'M-Y' }}

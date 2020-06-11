@@ -6,13 +6,14 @@
 
 <head>
         <meta charset="utf-8" />
-        <title>Cristino - A Responsive Personal Template</title>
+        <title>DeveGene</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="bootstrap 4, premium, marketing, multipurpose" />
         <meta content="Shreethemes" name="author" />
         <!-- favicon -->
-        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+{#        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">#}
+        <link rel="shortcut icon" href="{% static 'images/portfolio/portfoliofavicon3.png' %}">
 {#        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">#}
         <!-- Bootstrap -->
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
@@ -47,6 +48,7 @@
                 }
             }
             </style>
+            <link rel="stylesheet" href="{% static 'css/colors/dark-mode.css' %}">
         {% endblock style %}
 
 
@@ -176,7 +178,20 @@
         <hr>
 
 
+        <span class="shadow-lg dropdown " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="outline:none; position: fixed; bottom: 20px; left: 20px; padding: 10px; border-radius: 50%; color: white; background-color: red;">
+            <i style="font-size: 25px;" class="fas fa-palette"></i>
+               <div class="dropdown-menu">
+                <span class="dropdown-item dropdown-header">Light Mode</span>
+                <div class="dropdown-divider"></div>
+                   <div class="dropdown-item">
+                       <div class="custom-control custom-switch">
+                          <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+                       </div>
+                   </div>
 
+              </div>
+        </span>
         <!-- Back to top -->
         <a href="#" class="back-to-top rounded text-center" id="back-to-top">
             <i class="mdi mdi-chevron-up d-block"> </i>
@@ -223,8 +238,13 @@
         <!-- Main Js -->
         <script  src="{% static 'js/app.js' %}"></script>
         <script  src="{% static 'js/cusrom_cursor.js' %}"></script>
+        <script  src="{% static 'css/colors/dark-mode-switch.min.js' %}"></script>
         <script>
-            $(document).ready(function(){
+            //Attaching event handler to .dropdown selector.
+           $('span .dropdown .dropdown-menu input').click(function(e) {
+                e.stopPropagation(); //This will prevent the event from bubbling up and close the dropdown when you type/click on text boxes.
+            });
+           $(document).ready(function(){
                var spinner =  $("#spinner_loader2");
 
                $("#newsletter_form").submit(function(e){
@@ -287,6 +307,27 @@
             $(function () {
               $('[data-toggle="tooltip"]').tooltip()
             })
+        </script>
+        <script>
+
+
+            $(".modal-header").on("mousedown", function(mousedownEvt) {
+                var $draggable = $(this);
+                var x = mousedownEvt.pageX - $draggable.offset().left,
+                    y = mousedownEvt.pageY - $draggable.offset().top;
+                $("body").on("mousemove.draggable", function(mousemoveEvt) {
+                    $draggable.closest(".modal-dialog").offset({
+                        "left": mousemoveEvt.pageX - x,
+                        "top": mousemoveEvt.pageY - y
+                    });
+                });
+                $("body").one("mouseup", function() {
+                    $("body").off("mousemove.draggable");
+                });
+                $draggable.closest(".modal").one("bs.modal.hide", function() {
+                    $("body").off("mousemove.draggable");
+                });
+            });
         </script>
        {% block script %}
        {% endblock script %}

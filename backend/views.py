@@ -5,6 +5,8 @@ from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render, redirect
 import sweetify
+
+from mysite import settings
 from mysite.settings import *
 from django.contrib.auth import login as auth_login
 # # Base method with no type specified
@@ -18,10 +20,10 @@ from django.contrib.auth import login as auth_login
 # Create your views here.
 from backend.forms import *
 from backend.models import *
-# 70961e4ea8d0fa4fbaeb2b617ce45474c58af948da6c102406d7c631aa4d41b7
+#
 
 
-login_required()
+@login_required()
 def home(request):
     messages_count = ContactUs.objects.all().count()
     unread_messages_count = ContactUs.objects.filter(status='UNREAD').count()
@@ -38,7 +40,7 @@ def home(request):
     return render(request, 'PurpleAdmin-Free-Admin-Template/index.html', context)
 
 
-login_required()
+@login_required()
 def category(request):
     categories = Category.objects.all()
     context = {
@@ -86,7 +88,7 @@ def editcategory(request, category_id):
     return redirect('backend:category')
 
 
-login_required()
+@login_required()
 def view_carousel(request):
     context = {
         "carousels": Carousel.objects.all()
@@ -126,9 +128,7 @@ def carousel_edit(request, carousel_id):
     return redirect('backend:view_carousel')
 
 
-login_required()
-
-
+@login_required()
 def about_me(request):
     abouts = About.objects.all()
     context = {
@@ -180,9 +180,7 @@ def deleteabout_me(request, about_id):
     return redirect('backend:about_me')
 
 
-login_required()
-
-
+@login_required()
 def hobbies(request):
     context = {
         'hobbies': Hobbies.objects.order_by('?')
@@ -233,9 +231,7 @@ def deletehobbies(request, hobby_id):
     return redirect('backend:hobbies')
 
 
-login_required()
-
-
+@login_required()
 def services(request):
     context = {
         'services': Speciality.objects.all()
@@ -284,9 +280,7 @@ def deleteservices(request, service_id):
     return redirect('backend:services')
 
 
-login_required()
-
-
+@login_required()
 def progresscounter(request):
     context = {
         "pcs": Progresscounter.objects.all(),
@@ -331,9 +325,7 @@ def deleteprogresscounter(request, pc_id):
     return redirect("backend:progresscounter")
 
 
-login_required()
-
-
+@login_required()
 def counterimages(request):
     context = {
         'images': CounterImages.objects.all()
@@ -408,9 +400,7 @@ def editcounterimagesstatus(request, counter_image_id):
     return redirect("backend:counterimages")
 
 
-login_required()
-
-
+@login_required()
 def workexpertimage(request):
     context = {
         'images': WorkExpertise.objects.all()
@@ -484,9 +474,7 @@ def editworkexpertimagestatus(request, workexpertimage_id):
     return redirect('backend:workexpertimage')
 
 
-login_required()
-
-
+@login_required()
 def availforprojimage(request):
     contxt = {
         "images": AvailableForTheProject.objects.all()
@@ -560,9 +548,7 @@ def editavailforprojimagestatus(request, availforprojimage_id):
     return redirect('backend:availforprojimage')
 
 
-login_required()
-
-
+@login_required()
 def contactmeimage(request):
     contxt = {
         "images": ContactMeImage.objects.all()
@@ -634,9 +620,7 @@ def editcontactmeimagestatus(request, contactmeimage_id):
     return redirect('backend:contactmeimage')
 
 
-login_required()
-
-
+@login_required()
 def sendmessageimage(request):
     context = {
         'images': SendMessageImage.objects.all()
@@ -707,9 +691,7 @@ def editsendmessageimagestatus(request, sendmessageimage_id):
     return redirect("backend:sendmessageimage")
 
 
-login_required()
-
-
+@login_required()
 def workparticipation(request):
     contxt = {
         "wps": WorkParticipation.objects.all()
@@ -750,9 +732,7 @@ def deleteworkparticipation(request, work_pat_id):
     return redirect("backend:workparticipation")
 
 
-login_required()
-
-
+@login_required()
 def expertise(request):
     # print(Expertise.objects.all())
     contxt = {
@@ -795,9 +775,7 @@ def deleteexpertise(request, expertise_id):
     return redirect("backend:expertise")
 
 
-login_required()
-
-
+@login_required()
 def socialmedia(request):
     contxt = {
         "socials": SocialMedia.objects.all()
@@ -838,9 +816,7 @@ def deletesocialmedia(request, social_id):
     return redirect("backend:socialmedia")
 
 
-login_required()
-
-
+@login_required()
 def portfolio(request):
     contxt = {
         "categories": Category.objects.all(),
@@ -900,9 +876,7 @@ def editportfoliostatus(request, portfolio_id):
     return redirect('backend:portfolio')
 
 
-login_required()
-
-
+@login_required()
 def anouncementbar(request):
     contxt = {
         "announcements": AnnouncementBar.objects.all()
@@ -1075,14 +1049,14 @@ def deletemessages(request, email):
             contact.delete()
     return redirect('backend:messages')
 
-
+@login_required()
 def account(request):
     contxt={
         'admins' : Admin.objects.all()
     }
     return render(request, "PurpleAdmin-Free-Admin-Template/Account/account.html",contxt)
 
-
+@login_required()
 def updateaccount(request, user_id):
     exp = Admin.objects.filter(id=user_id).first()
     if request.method == "POST":
@@ -1094,7 +1068,7 @@ def updateaccount(request, user_id):
             sweetify.error(request, 'User Not Updeted')
     return redirect('backend:account')
 
-
+@login_required()
 def cv(request):
     contxt = {
         'educations': Education.objects.all().order_by('-start_d'),
@@ -1104,7 +1078,7 @@ def cv(request):
     }
     return render(request, "PurpleAdmin-Free-Admin-Template/Cv/cv.html",contxt)
 
-
+@login_required()
 def addEducation(request):
     if request.method == "POST":
         form = EducationForm(request.POST)
@@ -1135,7 +1109,7 @@ def deleteEducation(request, edu_id):
 
     return redirect('backend:cv')
 
-
+@login_required()
 def addExperience(request):
     if request.method == "POST":
         form = CvExperienceForm(request.POST)
@@ -1149,7 +1123,8 @@ def addExperience(request):
 def editExperience(request, exp_id):
     exp = Experience.objects.filter(id=exp_id).first()
     if request.method == "POST":
-        form = EducationForm(request.POST, instance=exp)
+        form = CvExperienceForm(request.POST, instance=exp)
+        print(form)
         if form.is_valid():
             form.save()
             sweetify.success(request, 'Experience Updeted Successfuly')
@@ -1167,7 +1142,7 @@ def deleteExperience(request, exp_id):
     return redirect('backend:cv')
 
 
-
+@login_required()
 def addSoftware(request):
     if request.method == "POST":
         form = CvSoftwareForm(request.POST)
@@ -1198,7 +1173,7 @@ def deleteSoftware(request, software_id):
 
     return redirect('backend:cv')
 
-
+@login_required()
 def addLanguage(request):
     if request.method == "POST":
         form = CvLanguageForm(request.POST)

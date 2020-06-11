@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import sweetify
 from django.urls import reverse_lazy
+
 from mysite.templateo import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*tnm4g17=vh%k@i#_gpy_ky&i4hese_+-$g%%^_1%=#))l+ru1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["167.99.13.212", 'localhost', '127.0.0.1','www.genedev.guru','genedev.guru']
 
@@ -173,9 +174,7 @@ LOGIN_URL = reverse_lazy('backend:login')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER =EMAIL_HOST_USER
-    # 'Climatechangebasicske@gmail.com'
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-    # 'Brandoxvilla7123'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL: False
